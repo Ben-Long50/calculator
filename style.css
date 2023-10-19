@@ -3,6 +3,8 @@ html{
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: rgb(255, 237, 211);
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 
 #calculator{
@@ -26,27 +28,74 @@ html{
     padding: 10px;
     justify-content: flex-end;
     border-radius: 10px;
-    background-color: white;
+    background-color: rgb(255, 251, 246);
 }
 
 .button-row{
     display: flex;
-    justify-content: space-between;
-    align-items: stretch;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
     padding: 0;
     margin: 0;
-    gap: 15px;
 }
 
-#clear-button{
-    font-size: 17px;
-
-}
-.input-button{
+.input-button,
+.operator-button,
+.clear-button{
     height: 80px;
     width: 80px;
     border: solid black 2px;
-    border-radius: 10px;
+    border-radius: 25px;
     text-align: center;
+    background-color: rgb(255, 251, 246);
+    flex: 0 0 auto;
+}
+
+.input-button,
+.operator-button{
     font-size: 25px;
+}
+
+.clear-button{
+    font-size: 15px;
+}
+
+.clicked-input{
+    animation-name: clicked-input;
+    animation-duration: 0.35s;
+    animation-timing-function: ease;
+    animation-iteration-count: 1;
+}
+
+.clicked-operator{
+    animation-name: clicked-operator;
+    animation-duration: 0.35s;
+    animation-timing-function: ease;
+    animation-iteration-count: 1;
+}
+
+.clicked-clear{
+    animation-name: clicked-clear;
+    animation-duration: 0.35s;
+    animation-timing-function: ease;
+    animation-iteration-count: 1;
+}
+
+@keyframes clicked-clear{
+    0% {background-color: rgb(255, 137, 137); }
+    0% {height: 75px; }
+    0% {width: 75px; }
+}
+
+@keyframes clicked-input{
+    0% {background-color: rgb(137, 241, 255); }
+    0% {height: 75px; }
+    0% {width: 75px; }
+}
+
+@keyframes clicked-operator{
+    0% {background-color: rgb(151, 255, 137); }
+    0% {height: 75px; }
+    0% {width: 75px; }
 }
