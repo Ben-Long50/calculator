@@ -10,30 +10,30 @@ html{
 #calculator{
     display: flex;
     flex-direction: column;
+    width: 365px;
     padding: 30px;
     justify-content: center;
-    align-items: stretch;
     border: solid black 3px;
     background-color: rgb(117, 161, 255);
-    width: auto;
     border-radius: 25px;
     gap: 15px;
 }
 
 #output-box{
     display: flex;
-    flex-basis: 100px;
-    flex-grow: 1;
+    flex-wrap: wrap;
+    flex-basis: 60px;
+    padding: 0 10px;
     border: solid black 3px;
-    padding: 10px;
     justify-content: flex-end;
+    align-items: center;
     border-radius: 10px;
     background-color: rgb(255, 251, 246);
 }
 
 .button-row{
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     gap: 15px;
     padding: 0;
@@ -46,7 +46,7 @@ html{
     height: 80px;
     width: 80px;
     border: solid black 2px;
-    border-radius: 25px;
+    border-radius: 15px;
     text-align: center;
     background-color: rgb(255, 251, 246);
     flex: 0 0 auto;
@@ -98,4 +98,9 @@ html{
     0% {background-color: rgb(151, 255, 137); }
     0% {height: 75px; }
     0% {width: 75px; }
+}
+
+.output-format{
+    font-size: 50px;
+    text-wrap: wrap;
 }
