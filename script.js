@@ -30,7 +30,7 @@ calculator.addEventListener('click', function(e){
 })
 
 const inputArray = [];
-const operators = ['+', '-', '*', '/'];
+const operators = ['+', '-', '*', '/', '%'];
 
 calculateButton.addEventListener('click', function(e){
     //collects the text content form each div found under output-box into an array
@@ -38,7 +38,6 @@ calculateButton.addEventListener('click', function(e){
     for(let i = 0; i < outputBox.children.length; i++){
         inputArray.push(outputBox.children[i].textContent);
     }
-    console.log(inputArray);
     //turns the number strings contained in the previous array into numbers
     const equationArray = inputArray.map(function(item){
         if(operators.includes(item)){
@@ -48,7 +47,7 @@ calculateButton.addEventListener('click', function(e){
             return +item;
         }
     })
-    console.log(equationArray);
+    //removes all input divs from the output-box parent and creates a new div displaying the equation result
     let equationResult = evaluateEquationArray(equationArray);
 
     while(outputBox.firstChild){
@@ -76,6 +75,9 @@ function evaluateEquationArray(array){
         } 
         else if (array[1] === '/') {
             result = num1 / num2;
+        }
+        else if (array[1] === '%') {
+            result = num1 % num2;
         }
         array.splice(0, 3, result);
     }
