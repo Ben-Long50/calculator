@@ -3,6 +3,8 @@ const outputBox = document.querySelector('#output-box');
 const calculateButton = document.querySelector('#calculate-button');
 const clearButton = document.querySelector('.clear-button');
 const backspaceButton = document.querySelector('.backspace-button');
+const inputArray = [];
+const operators = ['+','-','*','/','(',')'];
 
 calculator.addEventListener('click', function(e){
     if(e.target.matches('.input-button')){
@@ -27,13 +29,8 @@ backspaceButton.addEventListener('click', function(e){
 })
 
 clearButton.addEventListener('click', function(e){
-    while(outputBox.firstChild){
-        outputBox.removeChild(outputBox.firstChild);
-    }
+    removeAllChildren(outputBox);
 })
-
-const inputArray = [];
-const operators = ['+','-','*','/','(',')'];
 
 calculateButton.addEventListener('click', function(e){
     //collects the text content from each div found under output-box into an array
@@ -50,35 +47,46 @@ calculateButton.addEventListener('click', function(e){
             return +item;
         }
     })
+
     while(equationArray.includes('(')){
-        removeParenthesis(equationArray);
+        solveParenthesis(equationArray);
     }
 
-    //removes all input divs from the output-box parent and creates a new div displaying the equation result
     let equationResult = evaluateEquationArray(equationArray);
 
-    while(outputBox.firstChild){
-        outputBox.removeChild(outputBox.firstChild);
-    }
+    removeAllChildren(outputBox);
 
     outputBox.appendChild(document.createElement('div'));
     outputBox.lastChild.textContent = equationResult;
     outputBox.lastChild.classList.add('output-format');
 })
 
-function removeParenthesis(array){
+function removeAllChildren(parentElement){
+    while(parentElement.firstChild){
+        parentElement.removeChild(parentElement.firstChild);
+    }
+}
+function solveParenthesis(array){
     const startingIndex = array.indexOf('(')
     const endingIndex = array.indexOf(')')
-    parentheticalEquation = array.slice(startingIndex, endingIndex + 1);
-    indexCount = parentheticalEquation.length;
-    parentheticalEquation.shift();
-    parentheticalEquation.pop();
-    parentheticalSolution = evaluateEquationArray(parentheticalEquation);
-    array.splice(startingIndex, indexCount, parentheticalSolution[0]);
-    return array;
+    if(endingIndex === -1){
+        array.splice(startingIndex, 1);
+    }
+    else{
+        parentheticalEquation = array.slice(startingIndex, endingIndex + 1);
+        indexCount = parentheticalEquation.length;
+        parentheticalEquation.shift();
+        parentheticalEquation.pop();
+        parentheticalSolution = evaluateEquationArray(parentheticalEquation);
+        array.splice(startingIndex, indexCount, parentheticalSolution[0]);
+        return array;
+    }
 }
 
 function evaluateEquationArray(array){
+    if(typeof array[0] != 'number'){
+        return 'ERROR';
+    }
     while(array.length != 1){
         let result = 0;
         if (array.includes('*') || array.includes('/')){
@@ -87,10 +95,16 @@ function evaluateEquationArray(array){
             });
             const num1 = array[middleIndex - 1];
             const num2 = array[middleIndex + 1];
-            if(array[middleIndex] === '*'){
+            if(operators.includes(num1) || operators.includes(num2)){
+                return 'ERROR';
+            }
+            else if(array[middleIndex] === '*'){
                 result = num1 * num2;
             }
             else if(array[middleIndex] === '/'){
+                if(num1 === 0){
+                    return 'ERROR';
+                }
                 result = num1 / num2;
             }
             array.splice(middleIndex - 1, middleIndex + 2, result);
@@ -101,7 +115,10 @@ function evaluateEquationArray(array){
             });
             const num1 = array[middleIndex - 1];
             const num2 = array[middleIndex + 1];
-            if(array[middleIndex] === '+'){
+            if(operators.includes(num1) || operators.includes(num2)){
+                return 'ERROR';
+            }
+            else if(array[middleIndex] === '+'){
                 result = num1 + num2;
             }
             else if(array[middleIndex] === '-'){
@@ -112,57 +129,3 @@ function evaluateEquationArray(array){
     }
     return array;
 }
-
-function clickClear(e){
-    if(e.target.matches('.clear-button') || e.target.matches('.backspace-button')){
-        e.target.classList.add('clicked-clear');
-    }
-}
-
-function unclickClear(e){
-    setTimeout(function(){
-        if(e.target.matches('.clear-button') || e.target.matches('.backspace-button')){
-            e.target.classList.remove('clicked-clear');
-        }
-    }, 350);
-}
-
-calculator.addEventListener('mousedown', clickClear);
-calculator.addEventListener('mouseup', unclickClear);
-calculator.addEventListener('mouseout', unclickClear);
-
-function clickInput(e){
-    if(e.target.matches('.input-button')){
-        e.target.classList.add('clicked-input');
-    }
-}
-
-function unclickInput(e){
-    setTimeout(function(){
-        if(e.target.matches('.input-button')){
-            e.target.classList.remove('clicked-input');
-        }
-    }, 350);
-}
-
-calculator.addEventListener('mousedown', clickInput);
-calculator.addEventListener('mouseup', unclickInput);
-calculator.addEventListener('mouseout', unclickInput);
-
-function clickOperator(e){
-    if(e.target.matches('.operator-button')){
-        e.target.classList.add('clicked-operator');
-    }
-}
-
-function unclickOperator(e){
-    setTimeout(function(){
-        if(e.target.matches('.operator-button')){
-            e.target.classList.remove('clicked-operator');
-        }
-    }, 350);
-}
-
-calculator.addEventListener('mousedown', clickOperator);
-calculator.addEventListener('mouseup', unclickOperator);
-calculator.addEventListener('mouseout', unclickOperator);
