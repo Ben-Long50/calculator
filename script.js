@@ -1,10 +1,12 @@
 const calculator = document.querySelector('#calculator');
 const outputBox = document.querySelector('#output-box');
 const calculateButton = document.querySelector('#calculate-button');
+const clearButton = document.querySelector('.clear-button');
+const backspaceButton = document.querySelector('.backspace-button');
 
 calculator.addEventListener('click', function(e){
     if(e.target.matches('.input-button')){
-        if(outputBox.children.length === 0){
+        if(outputBox.children.length === 0 || operators.includes(outputBox.lastChild.textContent)){
             outputBox.appendChild(document.createElement('div'));
         }
         outputBox.lastChild.textContent += e.target.textContent
@@ -17,23 +19,24 @@ calculator.addEventListener('click', function(e){
         outputBox.appendChild(document.createElement('div'));
         outputBox.lastChild.textContent = e.target.textContent
         outputBox.lastChild.classList.add('output-format');
-        outputBox.appendChild(document.createElement('div'));
     }
 })
 
-calculator.addEventListener('click', function(e){
-    if(e.target.matches('.clear-button')){
-        while(outputBox.firstChild){
-            outputBox.removeChild(outputBox.firstChild);
-        }
+backspaceButton.addEventListener('click', function(e){
+            outputBox.removeChild(outputBox.lastChild);
+})
+
+clearButton.addEventListener('click', function(e){
+    while(outputBox.firstChild){
+        outputBox.removeChild(outputBox.firstChild);
     }
 })
 
 const inputArray = [];
-const operators = ['+', '-', '*', '/', '%'];
+const operators = ['+','-','*','/','(',')'];
 
 calculateButton.addEventListener('click', function(e){
-    //collects the text content form each div found under output-box into an array
+    //collects the text content from each div found under output-box into an array
     inputArray.length = 0;
     for(let i = 0; i < outputBox.children.length; i++){
         inputArray.push(outputBox.children[i].textContent);
@@ -47,6 +50,10 @@ calculateButton.addEventListener('click', function(e){
             return +item;
         }
     })
+    while(equationArray.includes('(')){
+        removeParenthesis(equationArray);
+    }
+
     //removes all input divs from the output-box parent and creates a new div displaying the equation result
     let equationResult = evaluateEquationArray(equationArray);
 
@@ -59,40 +66,62 @@ calculateButton.addEventListener('click', function(e){
     outputBox.lastChild.classList.add('output-format');
 })
 
+function removeParenthesis(array){
+    const startingIndex = array.indexOf('(')
+    const endingIndex = array.indexOf(')')
+    parentheticalEquation = array.slice(startingIndex, endingIndex + 1);
+    indexCount = parentheticalEquation.length;
+    parentheticalEquation.shift();
+    parentheticalEquation.pop();
+    parentheticalSolution = evaluateEquationArray(parentheticalEquation);
+    array.splice(startingIndex, indexCount, parentheticalSolution[0]);
+    return array;
+}
+
 function evaluateEquationArray(array){
     while(array.length != 1){
-        const num1 = array[0];
-        const num2 = array[2];
         let result = 0;
-        if (array[1] === '+') {
-            result = num1 + num2;
-        } 
-        else if (array[1] === '-') {
-            result = num1 - num2;
-        } 
-        else if (array[1] === '*') {
-            result = num1 * num2;
-        } 
-        else if (array[1] === '/') {
-            result = num1 / num2;
+        if (array.includes('*') || array.includes('/')){
+            const middleIndex = array.findIndex(function(operator){
+                return operator === '*' || operator === '/';
+            });
+            const num1 = array[middleIndex - 1];
+            const num2 = array[middleIndex + 1];
+            if(array[middleIndex] === '*'){
+                result = num1 * num2;
+            }
+            else if(array[middleIndex] === '/'){
+                result = num1 / num2;
+            }
+            array.splice(middleIndex - 1, middleIndex + 2, result);
         }
-        else if (array[1] === '%') {
-            result = num1 % num2;
+        else if (array.includes('+') || array.includes('-')){
+            const middleIndex = array.findIndex(function(operator){
+                return operator === '+' || operator === '-';
+            });
+            const num1 = array[middleIndex - 1];
+            const num2 = array[middleIndex + 1];
+            if(array[middleIndex] === '+'){
+                result = num1 + num2;
+            }
+            else if(array[middleIndex] === '-'){
+                result = num1 - num2;
+            }
+            array.splice(middleIndex - 1, middleIndex + 2, result);
         }
-        array.splice(0, 3, result);
     }
     return array;
 }
 
 function clickClear(e){
-    if(e.target.matches('.clear-button')){
+    if(e.target.matches('.clear-button') || e.target.matches('.backspace-button')){
         e.target.classList.add('clicked-clear');
     }
 }
 
 function unclickClear(e){
     setTimeout(function(){
-        if(e.target.matches('.clear-button')){
+        if(e.target.matches('.clear-button') || e.target.matches('.backspace-button')){
             e.target.classList.remove('clicked-clear');
         }
     }, 350);

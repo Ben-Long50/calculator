@@ -42,7 +42,8 @@ html{
 
 .input-button,
 .operator-button,
-.clear-button{
+.clear-button,
+.backspace-button{
     height: 80px;
     width: 80px;
     border: solid black 2px;
@@ -53,7 +54,8 @@ html{
 }
 
 .input-button,
-.operator-button{
+.operator-button,
+.backspace-button{
     font-size: 25px;
 }
 
