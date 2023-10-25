@@ -3,6 +3,8 @@ const outputBox = document.querySelector('#output-box');
 const calculateButton = document.querySelector('#calculate-button');
 const clearButton = document.querySelector('.clear-button');
 const backspaceButton = document.querySelector('.backspace-button');
+const inputButtons = document.querySelectorAll('.input-button');
+const operatorButtons = document.querySelectorAll('.operator-button');
 const inputArray = [];
 const operators = ['+','-','*','/','(',')'];
 
@@ -33,12 +35,60 @@ clearButton.addEventListener('click', function(e){
 })
 
 calculateButton.addEventListener('click', function(e){
-    //collects the text content from each div found under output-box into an array
+    evaluateEquation();
+})
+
+document.addEventListener('keydown', function(e){
+    if(e.key === 'Delete'){
+        removeAllChildren(outputBox);
+    }
+})
+
+document.addEventListener('keydown', function(e){
+    if(e.key === 'Enter'){
+        evaluateEquation();
+    }
+})
+
+document.addEventListener('keydown', function(e){
+    if(e.key === 'Backspace'){
+        outputBox.removeChild(outputBox.lastChild);    
+    }
+})
+
+const inputButtonsContent = [];
+inputButtons.forEach(function(content){
+    inputButtonsContent.push(content.textContent);
+})
+
+document.addEventListener('keydown', function(e){
+    if(inputButtonsContent.includes(e.key)){
+        if(outputBox.children.length === 0 || operators.includes(outputBox.lastChild.textContent)){
+            outputBox.appendChild(document.createElement('div'));
+        }
+        outputBox.lastChild.textContent += e.key
+        outputBox.lastChild.classList.add('output-format');
+    }
+})
+
+const operatorButtonsContent = [];
+operatorButtons.forEach(function(content){
+    operatorButtonsContent.push(content.textContent);
+})
+
+document.addEventListener('keydown', function(e){
+    if(operatorButtonsContent.includes(e.key)){
+        outputBox.appendChild(document.createElement('div'));
+        outputBox.lastChild.textContent = e.key
+        outputBox.lastChild.classList.add('output-format');
+    }
+})
+
+function evaluateEquation(){
     inputArray.length = 0;
     for(let i = 0; i < outputBox.children.length; i++){
         inputArray.push(outputBox.children[i].textContent);
     }
-    //turns the number strings contained in the previous array into numbers
     const equationArray = inputArray.map(function(item){
         if(operators.includes(item)){
             return item;
@@ -59,13 +109,8 @@ calculateButton.addEventListener('click', function(e){
     outputBox.appendChild(document.createElement('div'));
     outputBox.lastChild.textContent = equationResult;
     outputBox.lastChild.classList.add('output-format');
-})
-
-function removeAllChildren(parentElement){
-    while(parentElement.firstChild){
-        parentElement.removeChild(parentElement.firstChild);
-    }
 }
+
 function solveParenthesis(array){
     const startingIndex = array.indexOf('(')
     const endingIndex = array.indexOf(')')
@@ -128,4 +173,10 @@ function evaluateEquationArray(array){
         }
     }
     return array;
+}
+
+function removeAllChildren(parentElement){
+    while(parentElement.firstChild){
+        parentElement.removeChild(parentElement.firstChild);
+    }
 }

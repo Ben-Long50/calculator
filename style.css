@@ -108,5 +108,5 @@ body{
 
 .output-format{
     font-size: 50px;
-    text-wrap: wrap;
+    overflow: hidden;
 }
