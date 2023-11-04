@@ -1,14 +1,33 @@
+@font-face {
+    font-family: 'Press_Start_2P';
+    src: url(Press_Start_2P/PressStart2P-Regular.ttf) format('truetype');
+}
+
 html{
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgb(255, 237, 211);
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    background-color: rgb(82, 82, 82);
+    font-family: 'Press_Start_2P';
 }
 
 body{
+    height: 85vh;
+    display: flex;
+    flex-direction: column;
     user-select: none;
+    justify-content: space-between;
+    align-items: center;
+}
+
+h1{
+    margin: 0;
+    padding: 0;
+    line-height: 1.25;
+    text-align: center;
+    font-size: 4vh;
+    color:rgb(255, 54, 54);
 }
 
 #calculator{
@@ -17,8 +36,8 @@ body{
     width: 365px;
     padding: 30px;
     justify-content: center;
-    border: solid black 3px;
-    background-color: rgb(117, 161, 255);
+    border: none;
+    background-color: rgb(82, 82, 82);
     border-radius: 25px;
     gap: 15px;
 }
@@ -26,18 +45,18 @@ body{
 #output-box{
     display: flex;
     flex-wrap: wrap;
-    flex-basis: 60px;
-    padding: 0 10px;
-    border: solid black 3px;
+    flex-basis: 120px;
+    padding: 5px 10px;
+    border: none;
     justify-content: flex-end;
-    align-items: center;
+    align-items: flex-end;
     border-radius: 10px;
-    background-color: rgb(255, 251, 246);
+    background-color: rgb(32, 32, 32);
 }
 
 .button-row{
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     gap: 15px;
     padding: 0;
@@ -50,11 +69,14 @@ body{
 .backspace-button{
     height: 80px;
     width: 80px;
-    border: solid black 2px;
-    border-radius: 15px;
-    text-align: center;
-    background-color: rgb(255, 251, 246);
+    padding-top: 5px;
+    border: none;
+    border-radius: 10px;
+    color:rgb(255, 54, 54);
+    background-color: rgb(32, 32, 32);
     flex: 0 0 auto;
+    font-family: 'Press_Start_2P';
+    position: static;
 }
 
 .input-button,
@@ -64,49 +86,73 @@ body{
 }
 
 .clear-button{
-    font-size: 15px;
+    font-size: 13px;
+    text-align: center;
+}
+
+footer{
+    margin: 0;
+    padding: 0;
+    color:rgb(255, 54, 54);
+    font-size: 1.5vh;
 }
 
 .clicked-input{
     animation-name: clicked-input;
-    animation-duration: 0.35s;
+    animation-duration: 0.3s;
     animation-timing-function: ease;
     animation-iteration-count: 1;
 }
 
 .clicked-operator{
     animation-name: clicked-operator;
-    animation-duration: 0.35s;
+    animation-duration: 0.3s;
     animation-timing-function: ease;
     animation-iteration-count: 1;
 }
 
 .clicked-clear{
     animation-name: clicked-clear;
-    animation-duration: 0.35s;
+    animation-duration: 0.3s;
+    animation-timing-function: ease;
+    animation-iteration-count: 1;
+}
+
+.cleared-output{
+    animation-name: cleared-output;
+    animation-duration: 0.3s;
     animation-timing-function: ease;
     animation-iteration-count: 1;
 }
 
 @keyframes clicked-clear{
     0% {background-color: rgb(255, 137, 137); }
-    0% {height: 75px; }
-    0% {width: 75px; }
+    0% {transform: scale(1.15); }
 }
 
 @keyframes clicked-input{
     0% {background-color: rgb(137, 241, 255); }
-    0% {height: 75px; }
-    0% {width: 75px; }
+    0% {transform: scale(1.15); }
 }
 
 @keyframes clicked-operator{
     0% {background-color: rgb(151, 255, 137); }
-    0% {height: 75px; }
-    0% {width: 75px; }
+    0% {transform: scale(1.15); }
+}
+
+@keyframes cleared-output{
+    0% {background-color: rgb(255, 137, 137); }
+    0% {transform: scaleX(0); transform-origin: center;}
 }
 
 .output-format{
-    font-size: 50px;
+    padding-top: 5px;
+    font-size: 45px;
+    color:rgb(255, 54, 54);
     overflow: hidden;
+}
+
+.hovered-button{
+    background-color: rgb(97, 97, 97);
+    color: white;
 }
