@@ -147,9 +147,11 @@ footer{
 
 .output-format{
     padding-top: 5px;
-    font-size: 45px;
+    font-size: 35px;
     color:rgb(255, 54, 54);
+    white-space: nowrap;
     overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .hovered-button{
